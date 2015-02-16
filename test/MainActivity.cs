@@ -1,0 +1,367 @@
+﻿using System;
+using System.Collections.Generic;
+
+using Android.App;
+using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.OS;
+using Android.Provider;
+using Android.Widget;
+using test;
+using System.Threading.Tasks;
+using System.Threading;
+using Uri = Android.Net.Uri;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+
+namespace test
+{
+	[Activity (Label = "Sudoku Solver", MainLauncher = true, Icon = "@drawable/icon")]
+	public class MainActivity : Activity
+	{
+		Button pickImage;
+		Button takePicture;
+		Button solveSudoku;
+		ImageView imageView;
+		Bitmap bmp;
+		private Java.IO.File _dir;
+		private Java.IO.File _file;
+		private String filePath;
+		ProgressDialog progressBas;
+		int progressInc = 1;
+		public static readonly int PickImageId = 1000;
+
+		int PIC_CROP = 2;
+		//captured picture uri
+		private Uri picUri;
+
+		protected override void OnCreate (Bundle bundle)
+		{
+			System.Console.WriteLine ("vratio sam se u main activity");
+			base.OnCreate (bundle);
+
+			SetContentView (Resource.Layout.Main);
+
+			if (IsThereAnAppToTakePictures())
+			{
+				CreateDirectoryForPictures();
+				pickImage = FindViewById<Button> (Resource.Id.pickImage);
+			// Set our view from the "main" layout resourceResource.Id.pickImage);
+					takePicture = FindViewById<Button>(Resource.Id.takePicture);
+			// Get our button from the layout resource,
+			// and attach an event to itndViewById<Button> (Resource.Id.takePicture);
+				solveSudoku = FindViewById<Button> (Resource.Id.solveSudoku);
+				imageView = FindViewById<ImageView> (Resource.Id.imageView);
+
+				takePicture.Click += TakeAPicture;
+
+
+				solveSudoku.Click += Solve;
+
+				pickImage.Click += LoadImage;
+			}
+
+			if (Intent.GetByteArrayExtra ("BMP") != null) {
+				System.Console.WriteLine ("vratio sam se u main activity on create");
+				byte[] bytes = Intent.GetByteArrayExtra ("BMP");
+				Bitmap bmp = BitmapFactory.DecodeByteArray (bytes, 0, bytes.Length);
+				imageView.SetImageBitmap (bmp);
+			//	Sys*tem.Console.WriteLine (ntent.ToString());
+			}
+
+		}
+
+		protected void LoadImage(object sender, EventArgs eventArgs){
+			Intent = new Intent();
+			Intent.SetType("image/*");
+			Intent.SetAction(Intent.ActionGetContent);
+			StartActivityForResult(Intent.CreateChooser(Intent, "Select Picture"), PickImageId);
+		}
+
+	/*	protected override void OnResume ()
+		{
+			base.OnResume ();
+			Bundle extras = Intent.Extras;
+			if (extras != null) {
+				byte[] bytes = Intent.GetByteArrayExtra ("BMP");
+				Bitmap bmp = BitmapFactory.DecodeByteArray (bytes, 0, bytes.Length);
+				imageView.SetImageBitmap (bmp);/*
+				Bitmap photo = (Bitmap)extras.GetParcelable ("photo");
+
+				imageView.SetImageBitmap (photo);
+				bmp = photo;
+
+			}
+		}*/
+		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+		{
+
+			System.Console.WriteLine ("vratio sam se u main activity");
+			if ((requestCode == PickImageId) && (resultCode == Result.Ok) && (data != null))
+			{ 
+				var uri = data.Data;
+				imageView.SetImageURI(uri);
+				bmp = getBitmapFromUri (uri);
+			}
+			//base.OnActivityResult(requestCode, resultCode, data);
+			if(requestCode == 0){
+				// make it available in the gallery
+			//	Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+				Uri contentUri = Uri.FromFile(_file);
+				picUri = contentUri;
+				imageView.SetImageBitmap (getBitmapFromUri (picUri));
+			//	mediaScanIntent.SetData(contentUri);
+			//	SendBroadcast(mediaScanIntent);
+			//	performCrop();
+				//startuj novu aktivnost i posalji joj _file, requestCode = 1
+		/*		Intent intent = new Intent(this,typeof(CropImageActivity));
+				intent.PutExtra("filePath",filePath);
+			//	StartActivity(intent);*/
+			}
+			if(requestCode == PIC_CROP){
+				//get the returned data
+				Bundle extras = data.Extras;
+				var temp = Intent.GetParcelableExtra ("data");
+				//get the cropped bitmap
+				Bitmap thePic = Bitmap.CreateScaledBitmap((Bitmap)extras.GetParcelable("data"),800,800,true);
+				//retrieve a reference to the ImageView
+			//	ImageView picView = (ImageView)findViewById(R.id.picture);
+				//display the returned cropped image
+				imageView.SetImageBitmap(thePic);
+
+			}
+		}
+
+		private void performCrop(){
+			//take care of exceptions
+			try {
+				//call the standard crop action intent (the user device may not support it)
+				Intent cropIntent = new Intent("com.android.camera.action.CROP");
+				//indicate image type and Uri
+				cropIntent.SetDataAndType(picUri, "image/*");
+				//set crop properties
+				cropIntent.PutExtra("crop", true);
+				//indicate aspect of desired crop
+				cropIntent.PutExtra("scale", true);
+				//indicate output X and Y
+				cropIntent.PutExtra("outputX", 800);
+				cropIntent.PutExtra("outputY", 800);
+				//retrieve data on return
+
+				cropIntent.PutExtra("aspectX", 10);
+				cropIntent.PutExtra("aspectY", 10);
+
+				cropIntent.PutExtra("return-data", true);
+				//start the activity - we handle returning in onActivityResult
+				StartActivityForResult(cropIntent, PIC_CROP);
+
+			}
+			//respond to users whose devices do not support the crop action
+			catch(ActivityNotFoundException anfe){
+				//display an error message
+				String errorMessage = "Whoops - your device doesn't support the crop action!";
+				//Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+			//	toast.show();
+			}
+		}
+
+		private Android.Net.Uri getImageUri(String path)
+		{
+			return Android.Net.Uri.FromFile(new Java.IO.File(path));
+
+		}
+
+		private Bitmap getBitmap(String path)
+		{
+			var uri = getImageUri(path);
+			System.IO.Stream ins = null;
+			try
+			{
+				int IMAGE_MAX_SIZE = 1024;
+				ins = ContentResolver.OpenInputStream(uri);
+
+				// Decode image size
+				BitmapFactory.Options o = new BitmapFactory.Options();
+				o.InJustDecodeBounds = true;
+
+				BitmapFactory.DecodeStream(ins, null, o);
+				ins.Close();
+
+				int scale = 1;
+				if (o.OutHeight > IMAGE_MAX_SIZE || o.OutWidth > IMAGE_MAX_SIZE)
+				{
+					scale = (int)Math.Pow(2, (int)Math.Round(Math.Log(IMAGE_MAX_SIZE / (double)Math.Max(o.OutHeight, o.OutWidth)) / Math.Log(0.5)));
+				}
+
+				BitmapFactory.Options o2 = new BitmapFactory.Options();
+				o2.InSampleSize = scale;
+				ins = ContentResolver.OpenInputStream(uri);
+				Bitmap b = BitmapFactory.DecodeStream(ins, null, o2);
+				ins.Close();
+
+				return b;
+			}
+			catch (Exception e)
+			{
+			//	Log.Error(GetType().Name, e.Message);
+			}
+
+			return null;
+		}
+
+		private Bitmap getBitmapFromUri(Uri uri)
+		{
+			System.IO.Stream ins = null;
+			try
+			{
+				int IMAGE_MAX_SIZE = 1024;
+				ins = ContentResolver.OpenInputStream(uri);
+
+				// Decode image size
+				BitmapFactory.Options o = new BitmapFactory.Options();
+				o.InJustDecodeBounds = true;
+
+				BitmapFactory.DecodeStream(ins, null, o);
+				ins.Close();
+
+				int scale = 1;
+				if (o.OutHeight > IMAGE_MAX_SIZE || o.OutWidth > IMAGE_MAX_SIZE)
+				{
+					scale = (int)Math.Pow(2, (int)Math.Round(Math.Log(IMAGE_MAX_SIZE / (double)Math.Max(o.OutHeight, o.OutWidth)) / Math.Log(0.5)));
+				}
+
+				BitmapFactory.Options o2 = new BitmapFactory.Options();
+				o2.InSampleSize = scale;
+				ins = ContentResolver.OpenInputStream(uri);
+				Bitmap b = BitmapFactory.DecodeStream(ins, null, o2);
+				ins.Close();
+
+				return b;
+			}
+			catch (Exception e)
+			{
+				//	Log.Error(GetType().Name, e.Message);
+			}
+
+			return null;
+		}
+
+		private void CreateDirectoryForPictures()
+		{
+			_dir = new Java.IO.File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures), "SudokuSolver");
+			if (!_dir.Exists())
+			{
+				_dir.Mkdirs();
+			}
+		}
+
+		private bool IsThereAnAppToTakePictures()
+		{
+			Intent intent = new Intent(MediaStore.ActionImageCapture);
+			IList<ResolveInfo> availableActivities = PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
+			return availableActivities != null && availableActivities.Count > 0;
+		}
+
+		private void TakeAPicture(object sender, EventArgs eventArgs)
+		{
+			Intent intent = new Intent(MediaStore.ActionImageCapture);
+			_file = new Java.IO.File(_dir, String.Format("myPhoto_{0}.jpg", Guid.NewGuid()));
+			filePath = _file.AbsolutePath;
+			Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+			Uri contentUri = Uri.FromFile(_file);
+			mediaScanIntent.SetData(contentUri);
+			SendBroadcast(mediaScanIntent);
+
+			intent.PutExtra(MediaStore.ExtraOutput, Uri.FromFile(_file));
+		
+			StartActivityForResult(intent, 0);
+		}
+
+		public void Solve(object sender, EventArgs eventArgs){
+			if (bmp != null) {
+				ProgressDialog mDialog = new ProgressDialog (this);
+				mDialog.SetMessage ("Solving...");
+				mDialog.SetCancelable (false);
+				mDialog.Show ();
+				Task.Run (() => {
+					/*	ProgressDialog mDialog = new ProgressDialog (this);
+				mDialog.SetMessage ("Solving...");
+				mDialog.SetCancelable (false);
+				mDialog.Show ();*/
+					//Your Logic Here.
+					SudokuNumbers sudoku = new SudokuNumbers ();
+
+					double[,,] temp = DeSerializeCollection ("obucavajuciSkup");
+					sudoku.bp = new BackPropagation (temp);
+					//	mDialog.SetMessage("Obucavam...");
+					sudoku.bp.obuci ();
+					//sudoku.bp.obuci ();
+					//sudoku.bp.obuci ();
+					sudoku.initialize ();
+
+					System.Console.WriteLine ("Greska prilikom deserijalizacije!");
+					//	mDialog.SetMessage("Prepoznajem...");
+					int[,] resenjeInt = sudoku.Prepoznaj (bmp);
+					if (resenjeInt != null) {
+						string resenje = "";
+						//int w = slika.GetLength(1);// .GetLowerBound(0);
+						//int h = slika.GetLength(0);
+						for (int i = 0; i < 9; i++) {
+							for (int j = 0; j < 9; j++) {
+								resenje += resenjeInt [j, i].ToString ();
+							}
+							resenje += "\n";
+						}
+						mDialog.Dismiss ();
+
+						Intent finish = new Intent (this, typeof(ShowResult)); 
+						finish.PutExtra ("resenje", resenje);
+				//		Toast.MakeText (Android.App.Application.Context, "Solved", ToastLength.Long).Show ();
+						StartActivity (finish);
+					} else {
+						mDialog.Dismiss ();
+					}
+
+
+				});
+			}
+		
+
+			
+
+		}
+
+
+		
+
+
+	
+		public double[,,] DeSerializeCollection(string fileName)
+		{
+				double[, ,] temp = null;
+				try
+				{
+				string[] aseti = Assets.List("");
+				for(int i = 0; i < aseti.Length; i++){
+					System.Console.WriteLine(aseti[i]);
+				}
+					using (Stream sr = Assets.Open ("obucavajuciSkup"))
+					{
+						BinaryFormatter bin = new BinaryFormatter();
+
+						temp = (double[,,])bin.Deserialize(sr);
+					}
+				}
+				catch (Exception)
+				{
+					System.Console.WriteLine("Greska prilikom deserijalizacije!");
+				}
+				return temp;
+		}
+
+	}
+}
+
+

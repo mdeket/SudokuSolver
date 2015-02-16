@@ -1,0 +1,50 @@
+﻿<Properties StartupItem="test\Sudoku Solver.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.SelectDevice" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="test\MainActivity.cs">
+    <Files>
+      <File FileName="test\MainActivity.cs" Line="4" Column="4" />
+      <File FileName="test\ShowResult.cs" Line="1" Column="1" />
+      <File FileName="test\CropImageActivity.cs" Line="1" Column="1" />
+      <File FileName="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SudokuNumbers.cs" Line="1" Column="1" />
+      <File FileName="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SolvingAlgorithm.cs" Line="1" Column="1" />
+      <File FileName="test\ImageEditing\ImageUtil.cs" Line="1" Column="1" />
+      <File FileName="test\ImageEditing\BackPropagation.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="1355" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="1289" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="763" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="704" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="721" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="713" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="734" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="1350" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="1315" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="1306" column="1" />
+      <Breakpoint enabled="false" file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\ImageUtil.cs" line="90" column="1" />
+      <Breakpoint enabled="false" file="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\BackPropagation.cs" line="194" column="1" />
+      <Breakpoint enabled="false" file="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\BackPropagation.cs" line="183" column="1" />
+      <Breakpoint enabled="false" file="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\BackPropagation.cs" line="178" column="26" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SudokuNumbers.cs" line="290" column="1" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SudokuNumbers.cs" line="244" column="1" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="92" column="5" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\CropImageActivity.cs" line="106" column="1" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\CropImageActivity.cs" line="126" column="1" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="70" column="1" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="125" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="test\ImageEditing\ImageUtil.cs" line="624" offsetX="424" offsetY="9968" expression="colorA" liveUpdate="False" />
+    <Watch file="test\ImageEditing\ImageUtil.cs" line="618" offsetX="886" offsetY="9872" expression="color" liveUpdate="False" />
+    <Watch file="test\ImageEditing\ImageUtil.cs" line="619" offsetX="634" offsetY="9888" expression="colorA" liveUpdate="False" />
+    <Watch file="test\ImageEditing\ImageUtil.cs" line="61" offsetX="606" offsetY="960" expression="cA" liveUpdate="False" />
+    <Watch file="test\ImageEditing\ImageUtil.cs" line="63" offsetX="711" offsetY="992" expression="b" liveUpdate="False" />
+    <Watch file="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\BackPropagation.cs" line="181" offsetX="403" offsetY="2880" expression="data" liveUpdate="False" />
+    <Watch file="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\BackPropagation.cs" line="183" offsetX="347" offsetY="2912" expression="data" liveUpdate="False" />
+    <Watch file="test\ImageEditing\SudokuNumbers.cs" line="221" offsetX="466" offsetY="3520" expression="regSlika" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+  <MonoDevelop.Ide.ItemProperties.Sudoku_220Solver MonoForAntroid.PreferredDevice="Nexus 4" />
+</Properties>

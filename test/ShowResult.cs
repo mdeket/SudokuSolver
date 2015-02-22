@@ -10,13 +10,15 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Content.PM;
 
 namespace test
 {
-	[Activity (Label = "ShowResult")]			
+	[Activity (Label = "ShowResult", ScreenOrientation = ScreenOrientation.Portrait)]			
 	public class ShowResult : Activity
 	{
 		TextView results;
+		Button toMain;
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
@@ -24,16 +26,14 @@ namespace test
 			SetContentView (Resource.Layout.showResult);
 			// Create your application here
 			results = FindViewById<TextView> (Resource.Id.results);
-
-			//Bundle extras = Intent.Extras;
-			//if (bundle != null) {
-
-				//string resenje = bundle.GetString ("resenje");
-
+			toMain = FindViewById<Button> (Resource.Id.toMain);
+			toMain.Click += toMainActivity;
 			results.Text = (Intent.GetStringExtra("resenje"));
+		}
 
-		//	}*/
-		//	results.SetText(Intent.GetStringExtra("resenje"));
+		public void toMainActivity(object sender, EventArgs eventArgs){
+			Intent intent = new Intent (this, typeof(MainActivity));
+			StartActivity (intent);
 		}
 	}
 }

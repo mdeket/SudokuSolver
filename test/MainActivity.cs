@@ -18,12 +18,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace test
 {
-	[Activity (Label = "Sudoku Solver", MainLauncher = true, Icon = "@drawable/icon")]
+	[Activity (Label = "Sudoku Solver", MainLauncher = true, Icon = "@drawable/icon",ScreenOrientation = ScreenOrientation.Portrait)]
 	public class MainActivity : Activity
 	{
 		Button pickImage;
 		Button takePicture;
 		Button solveSudoku;
+		Button exit;
 		ImageView imageView;
 		Bitmap bmp;
 		private Java.IO.File _dir;
@@ -41,34 +42,28 @@ namespace test
 		{
 			System.Console.WriteLine ("vratio sam se u main activity");
 			base.OnCreate (bundle);
-
 			SetContentView (Resource.Layout.Main);
 
 			if (IsThereAnAppToTakePictures())
 			{
 				CreateDirectoryForPictures();
+
 				pickImage = FindViewById<Button> (Resource.Id.pickImage);
-			// Set our view from the "main" layout resourceResource.Id.pickImage);
-					takePicture = FindViewById<Button>(Resource.Id.takePicture);
-			// Get our button from the layout resource,
-			// and attach an event to itndViewById<Button> (Resource.Id.takePicture);
+				takePicture = FindViewById<Button>(Resource.Id.takePicture);
 				solveSudoku = FindViewById<Button> (Resource.Id.solveSudoku);
 				imageView = FindViewById<ImageView> (Resource.Id.imageView);
+				exit = FindViewById<Button>(Resource.Id.exit);
 
+				exit.Click += Exit;
 				takePicture.Click += TakeAPicture;
-
-
 				solveSudoku.Click += Solve;
-
 				pickImage.Click += LoadImage;
 			}
 
 			if (Intent.GetByteArrayExtra ("BMP") != null) {
-				System.Console.WriteLine ("vratio sam se u main activity on create");
 				byte[] bytes = Intent.GetByteArrayExtra ("BMP");
 				Bitmap bmp = BitmapFactory.DecodeByteArray (bytes, 0, bytes.Length);
 				imageView.SetImageBitmap (bmp);
-			//	Sys*tem.Console.WriteLine (ntent.ToString());
 			}
 
 		}
@@ -80,21 +75,10 @@ namespace test
 			StartActivityForResult(Intent.CreateChooser(Intent, "Select Picture"), PickImageId);
 		}
 
-	/*	protected override void OnResume ()
-		{
-			base.OnResume ();
-			Bundle extras = Intent.Extras;
-			if (extras != null) {
-				byte[] bytes = Intent.GetByteArrayExtra ("BMP");
-				Bitmap bmp = BitmapFactory.DecodeByteArray (bytes, 0, bytes.Length);
-				imageView.SetImageBitmap (bmp);/*
-				Bitmap photo = (Bitmap)extras.GetParcelable ("photo");
+		protected void Exit(object sender, EventArgs eventArgs){
+			Finish ();
+		}
 
-				imageView.SetImageBitmap (photo);
-				bmp = photo;
-
-			}
-		}*/
 		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
 		{
 
@@ -149,10 +133,8 @@ namespace test
 				cropIntent.PutExtra("outputX", 800);
 				cropIntent.PutExtra("outputY", 800);
 				//retrieve data on return
-
 				cropIntent.PutExtra("aspectX", 10);
 				cropIntent.PutExtra("aspectY", 10);
-
 				cropIntent.PutExtra("return-data", true);
 				//start the activity - we handle returning in onActivityResult
 				StartActivityForResult(cropIntent, PIC_CROP);
@@ -162,8 +144,8 @@ namespace test
 			catch(ActivityNotFoundException anfe){
 				//display an error message
 				String errorMessage = "Whoops - your device doesn't support the crop action!";
-				//Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
-			//	toast.show();
+				Toast toast = Toast.MakeText(this, errorMessage,ToastLength.Short);
+				toast.Show();
 			}
 		}
 
@@ -273,9 +255,7 @@ namespace test
 			Uri contentUri = Uri.FromFile(_file);
 			mediaScanIntent.SetData(contentUri);
 			SendBroadcast(mediaScanIntent);
-
 			intent.PutExtra(MediaStore.ExtraOutput, Uri.FromFile(_file));
-		
 			StartActivityForResult(intent, 0);
 		}
 
@@ -286,31 +266,25 @@ namespace test
 				mDialog.SetCancelable (false);
 				mDialog.Show ();
 				Task.Run (() => {
-					/*	ProgressDialog mDialog = new ProgressDialog (this);
-				mDialog.SetMessage ("Solving...");
-				mDialog.SetCancelable (false);
-				mDialog.Show ();*/
-					//Your Logic Here.
 					SudokuNumbers sudoku = new SudokuNumbers ();
-
 					double[,,] temp = DeSerializeCollection ("obucavajuciSkup");
 					sudoku.bp = new BackPropagation (temp);
-					//	mDialog.SetMessage("Obucavam...");
-					sudoku.bp.obuci ();
-					//sudoku.bp.obuci ();
-					//sudoku.bp.obuci ();
 					sudoku.initialize ();
+					sudoku.bp.obuci ();
+					sudoku.bp.obuci ();
 
-					System.Console.WriteLine ("Greska prilikom deserijalizacije!");
-					//	mDialog.SetMessage("Prepoznajem...");
 					int[,] resenjeInt = sudoku.Prepoznaj (bmp);
 					if (resenjeInt != null) {
 						string resenje = "";
-						//int w = slika.GetLength(1);// .GetLowerBound(0);
-						//int h = slika.GetLength(0);
 						for (int i = 0; i < 9; i++) {
 							for (int j = 0; j < 9; j++) {
+								if(j%3 == 0 && j != 0){
+									resenje += "   ";
+								}
 								resenje += resenjeInt [j, i].ToString ();
+							}
+							if((i+1)%3 == 0 && i != 0){
+								resenje += "\n";
 							}
 							resenje += "\n";
 						}
@@ -318,26 +292,15 @@ namespace test
 
 						Intent finish = new Intent (this, typeof(ShowResult)); 
 						finish.PutExtra ("resenje", resenje);
-				//		Toast.MakeText (Android.App.Application.Context, "Solved", ToastLength.Long).Show ();
 						StartActivity (finish);
 					} else {
 						mDialog.Dismiss ();
 					}
-
-
 				});
 			}
-		
-
-			
-
 		}
 
 
-		
-
-
-	
 		public double[,,] DeSerializeCollection(string fileName)
 		{
 				double[, ,] temp = null;
@@ -357,6 +320,10 @@ namespace test
 				catch (Exception)
 				{
 					System.Console.WriteLine("Greska prilikom deserijalizacije!");
+					String errorMessage = "Error acquired during deserialization!";
+					Toast toast = Toast.MakeText(this, errorMessage,ToastLength.Short);
+					toast.Show();
+
 				}
 				return temp;
 		}

@@ -56,9 +56,6 @@ namespace test
 			// aapt resource value: 0x7f020003
 			public const int indicator_autocrop = 2130837507;
 			
-			// aapt resource value: 0x7f020004
-			public const int monoandroidsplash = 2130837508;
-			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -72,38 +69,44 @@ namespace test
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060002
-			public const int discard = 2131099650;
+			// aapt resource value: 0x7f050002
+			public const int discard = 2131034114;
 			
-			// aapt resource value: 0x7f060003
-			public const int gallery1 = 2131099651;
+			// aapt resource value: 0x7f050009
+			public const int exit = 2131034121;
 			
-			// aapt resource value: 0x7f060004
-			public const int gallery2 = 2131099652;
+			// aapt resource value: 0x7f050003
+			public const int gallery1 = 2131034115;
 			
-			// aapt resource value: 0x7f060005
-			public const int imageView = 2131099653;
+			// aapt resource value: 0x7f050004
+			public const int gallery2 = 2131034116;
 			
-			// aapt resource value: 0x7f060000
-			public const int imageViewCrop = 2131099648;
+			// aapt resource value: 0x7f050005
+			public const int imageView = 2131034117;
 			
-			// aapt resource value: 0x7f060009
-			public const int linearLayout1 = 2131099657;
+			// aapt resource value: 0x7f050000
+			public const int imageViewCrop = 2131034112;
 			
-			// aapt resource value: 0x7f060007
-			public const int pickImage = 2131099655;
+			// aapt resource value: 0x7f05000a
+			public const int linearLayout1 = 2131034122;
 			
-			// aapt resource value: 0x7f06000a
-			public const int results = 2131099658;
+			// aapt resource value: 0x7f050007
+			public const int pickImage = 2131034119;
 			
-			// aapt resource value: 0x7f060001
-			public const int save = 2131099649;
+			// aapt resource value: 0x7f05000b
+			public const int results = 2131034123;
 			
-			// aapt resource value: 0x7f060008
-			public const int solveSudoku = 2131099656;
+			// aapt resource value: 0x7f050001
+			public const int save = 2131034113;
 			
-			// aapt resource value: 0x7f060006
-			public const int takePicture = 2131099654;
+			// aapt resource value: 0x7f050008
+			public const int solveSudoku = 2131034120;
+			
+			// aapt resource value: 0x7f050006
+			public const int takePicture = 2131034118;
+			
+			// aapt resource value: 0x7f05000c
+			public const int toMain = 2131034124;
 			
 			static Id()
 			{
@@ -152,22 +155,6 @@ namespace test
 			}
 			
 			private String()
-			{
-			}
-		}
-		
-		public partial class Style
-		{
-			
-			// aapt resource value: 0x7f050000
-			public const int Mono_Android_Theme_Splash = 2131034112;
-			
-			static Style()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private Style()
 			{
 			}
 		}

@@ -1,8 +1,8 @@
-﻿<Properties StartupItem="test\Sudoku Solver.csproj">
+﻿<Properties StartupItem="test\Sudoku Solver.csproj" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.SelectDevice" />
   <MonoDevelop.Ide.Workbench ActiveDocument="test\MainActivity.cs">
     <Files>
-      <File FileName="test\MainActivity.cs" Line="4" Column="4" />
+      <File FileName="test\MainActivity.cs" Line="15" Column="15" />
       <File FileName="test\ShowResult.cs" Line="1" Column="1" />
       <File FileName="test\CropImageActivity.cs" Line="1" Column="1" />
       <File FileName="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SudokuNumbers.cs" Line="1" Column="1" />
@@ -29,11 +29,9 @@
       <Breakpoint enabled="false" file="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\BackPropagation.cs" line="178" column="26" />
       <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SudokuNumbers.cs" line="290" column="1" />
       <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SudokuNumbers.cs" line="244" column="1" />
-      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="92" column="5" />
       <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\CropImageActivity.cs" line="106" column="1" />
       <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\CropImageActivity.cs" line="126" column="1" />
-      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="70" column="1" />
-      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="125" column="1" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="47" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

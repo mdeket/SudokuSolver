@@ -24,9 +24,10 @@ namespace test
 			base.OnCreate (bundle);
 
 			SetContentView (Resource.Layout.showResult);
-			// Create your application here
+
 			results = FindViewById<TextView> (Resource.Id.results);
 			toMain = FindViewById<Button> (Resource.Id.toMain);
+
 			toMain.Click += toMainActivity;
 			results.Text = (Intent.GetStringExtra("resenje"));
 		}

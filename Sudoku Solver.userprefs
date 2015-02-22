@@ -1,14 +1,9 @@
 ﻿<Properties StartupItem="test\Sudoku Solver.csproj" GitUserInfo="UsingGIT">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.SelectDevice" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="test\MainActivity.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.59e1d5e4" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="test\ShowResult.cs">
     <Files>
-      <File FileName="test\MainActivity.cs" Line="15" Column="15" />
-      <File FileName="test\ShowResult.cs" Line="1" Column="1" />
-      <File FileName="test\CropImageActivity.cs" Line="1" Column="1" />
-      <File FileName="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SudokuNumbers.cs" Line="1" Column="1" />
-      <File FileName="c:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SolvingAlgorithm.cs" Line="1" Column="1" />
-      <File FileName="test\ImageEditing\ImageUtil.cs" Line="1" Column="1" />
-      <File FileName="test\ImageEditing\BackPropagation.cs" Line="1" Column="1" />
+      <File FileName="test\MainActivity.cs" Line="20" Column="20" />
+      <File FileName="test\ShowResult.cs" Line="41" Column="41" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -31,7 +26,9 @@
       <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\ImageEditing\SudokuNumbers.cs" line="244" column="1" />
       <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\CropImageActivity.cs" line="106" column="1" />
       <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\CropImageActivity.cs" line="126" column="1" />
-      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="47" column="1" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="277" column="1" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="295" column="1" />
+      <Breakpoint file="C:\Users\deket_000\Documents\Projects\test\test\MainActivity.cs" line="297" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

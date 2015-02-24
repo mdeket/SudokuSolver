@@ -16,6 +16,7 @@
     <AssemblyName>test</AssemblyName>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
+    <ReleaseVersion>1.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,7 +49,9 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="MainActivity.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BitmapHelpers.cs" />
@@ -63,6 +66,7 @@
     <Compile Include="ImageEditing\KMeans1D.cs" />
     <Compile Include="ImageEditing\SudokuNumbers.cs" />
     <Compile Include="ImageEditing\SolvingAlgorithm.cs" />
+    <Compile Include="Validation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -77,6 +81,8 @@
     <AndroidResource Include="Resources\drawable\indicator_autocrop.png" />
     <AndroidResource Include="Resources\layout\cropimage.axml" />
     <AndroidResource Include="Resources\layout\showResult.axml" />
+    <AndroidResource Include="Resources\drawable\sudoku.png" />
+    <AndroidResource Include="Resources\layout\ValidationLayout.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
@@ -84,8 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AboutAssets.txt" />
-    <AndroidAsset Include="Assets\obucavajuciSkup">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </AndroidAsset>
+    <AndroidAsset Include="Assets\obucavajuciSkup" />
+    <AndroidAsset Include="Assets\skupK1" />
+    <AndroidAsset Include="Assets\skupK2" />
   </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+C:\Users\deket_000\Documents\Projects\test\test\bin\Debug\MainActivity.cs
 C:\Users\deket_000\Documents\Projects\test\test\bin\Debug\test.dll
 C:\Users\deket_000\Documents\Projects\test\test\bin\Debug\test.pdb
 C:\Users\deket_000\Documents\Projects\test\test\bin\Debug\test.dll.mdb
@@ -14,5 +15,7 @@ C:\Users\deket_000\Documents\Projects\test\test\obj\Debug\res\drawable\camera_cr
 C:\Users\deket_000\Documents\Projects\test\test\obj\Debug\res\drawable\indicator_autocrop.png
 C:\Users\deket_000\Documents\Projects\test\test\obj\Debug\res\layout\cropimage.xml
 C:\Users\deket_000\Documents\Projects\test\test\obj\Debug\res\layout\showresult.xml
+C:\Users\deket_000\Documents\Projects\test\test\obj\Debug\res\drawable\sudoku.png
+C:\Users\deket_000\Documents\Projects\test\test\obj\Debug\res\layout\validationlayout.xml
 C:\Users\deket_000\Documents\Projects\test\test\obj\Debug\R.cs.flag
 C:\Users\deket_000\Documents\Projects\test\test\obj\Debug\uploadflags.txt

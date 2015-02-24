@@ -4,6 +4,18 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Android.App;
+using Android.Content;
+using Android.Content.PM;
+
+using Android.Graphics.Drawables;
+using Android.OS;
+using Android.Provider;
+using Android.Widget;
+using test;
+using System.Threading.Tasks;
+using System.Threading;
+using Uri = Android.Net.Uri;
 
 namespace test
 {
@@ -14,7 +26,9 @@ namespace test
 		Dictionary<String, int> alfabet = new Dictionary<string, int>();
 		Dictionary<int, String> alfabetInv = new Dictionary<int, string>();
 		public BackPropagation bp;
-
+		public List<System.Drawing.Color> skupK1 = new List<System.Drawing.Color>(); //ZA PRIMENU BAYES-A
+		public List<System.Drawing.Color> skupK2 = new List<System.Drawing.Color>();
+		public BayesFilter bayesFilter;
 		private int[,] matricaTabele = new int[9, 9];
 
 		public SudokuNumbers ()
@@ -49,33 +63,90 @@ namespace test
 			_recnik.Add("9");
 			_alfabet = "0123456789";
 			string obucavajuciSkup = _alfabet;
+
 		}
 
 		public int[,] Prepoznaj(Bitmap bmp) //ZADATAK
 		{
-		/*	byte[,] slika11 = ImageUtil.bitmapToByteMatrix(bmp);
-			byte[,] bSlikawq = ImageUtil.matrixToBinaryTiles(slika11, 10, 10);
-			Bitmap temp = ImageUtil.matrixToBitmap(bSlikawq);*/
-
-			string prepoznato = "";
-		//	bmp = temp;
-			Bitmap img = bmp;
+			//bajes
 			byte[, ,] slika = ImageUtil.bitmapToColorMatrix(bmp);
-
-			//    BayesFilter bayesFilter = new BayesFilter(skupK1, skupK2); //primena Bayes color segmentacije
-			//  bayesFilter.obucavanje();
-
+		
 			// -------- primeniti filter na sliku ----------------
-			DateTime d1 = DateTime.Now;
 			int w = slika.GetLength(1);
 			int h = slika.GetLength(0);
 			byte[, ,] nslika = new byte[h, w, 3];
 
+			for (int y = 0; y < h; y++)
+			{
+				for (int x = 0; x < w; x++)
+				{
+					// za svaki piksel na slici odrediti verovatnocu da pripada klasi 1
+					// pozvati metodu "pK1akojeRGB"
+					byte cbR = slika[y, x, 0];
+					byte cbG = slika[y, x, 1];
+					byte cbB = slika[y, x, 2];
+					System.Drawing.Color cc = System.Drawing.Color.FromArgb(255, cbR, cbG, cbB);
+					// racunanje verovatnoce da boja piksela pripada prvoj klasi
 
-			byte[,] slika1 = ImageUtil.bitmapToByteMatrix(bmp);
-			byte[,] bSlika = ImageUtil.matrixToBinary(slika1, 200);
+					//OK
+				
+					double pk1rgb = bayesFilter.pK1akojeRGB(cc);
+					// verovatnoca - realna vrednost u intervalu [0,1]
+					// se skalira na celobroju vrednost u intervalu [0, 255]
+					// - crno - ne pripada klasi 1
+					// - belo - pripada klasi 1
+					// - nijansa sive - delimicno pripada klasi 1
+				/*	if (pk1rgb == 0) {
+						System.Console.WriteLine ("nula pk1rgb");
+					} else if(double.IsNaN(pk1rgb)){
+						System.Console.WriteLine ("double.IsNaN pk1rgb");
+					} else if(pk1rgb > 1){
+						System.Console.WriteLine ("1 < pk1rgb");
+					}*/
 
-			List<RasterRegion> regions = ImageUtil.regionLabeling(bSlika);
+					//OK
+					int temp = (int)(255 * pk1rgb);
+					byte skalirano = Convert.ToByte (255 * pk1rgb);//(byte)(255 * pk1rgb);
+
+					/*if (skalirano != 0) {
+						System.Console.WriteLine ("nije nula");
+					}*/
+					// sve tri komponente (R,G,B) se postavljaju istu vrednost
+					// kako bi se dobila grayscale rezultujuca slika
+					nslika[y, x, 0] = skalirano;
+					nslika[y, x, 1] = skalirano;
+					nslika[y, x, 2] = skalirano;
+				}
+			}
+
+
+
+			byte[,] slika1 = ImageUtil.colorMatrixToBWByteMatrix(nslika);
+
+
+
+
+			int white = 0;
+			int black = 0;
+			for (int i = 0; i < slika1.GetLength (0); i++) {
+				for (int j = 0; j < slika1.GetLength (1); j++) {
+					if (slika1 [i, j] == 0) {
+						white++;
+					} else if (slika1 [i, j] == 255) {
+						black++;
+					}
+				}
+			}
+
+
+
+
+			string prepoznato = "";
+			//byte[,] slika1 = ImageUtil.bitmapToByteMatrix(into);
+
+			//byte[,] bSlika = ImageUtil.matrixToBinary(slika1, 200);  -- dodato u funkciji ImageUtil.colorMatrixToByteArray nslika
+
+			List<RasterRegion> regions = ImageUtil.regionLabeling(slika1);
 			foreach (RasterRegion reg in regions)
 			{
 				reg.odrediMomente();
@@ -83,7 +154,7 @@ namespace test
 			List<RasterRegion> aKandidati = new List<RasterRegion>();
 			foreach (RasterRegion reg in regions)
 			{
-				if (reg.points.Count > 10)
+				if (reg.points.Count > 100)
 				{
 					aKandidati.Add(reg);
 				}
@@ -111,6 +182,35 @@ namespace test
 			sudokuTable = regions[indexOfSudokuTable];
 			double razmakCelija = maxRegionWidth / 9;
 			regions.RemoveAt(indexOfSudokuTable);
+
+
+
+			string word = "";
+			for (int i = 0; i < regions.Count; i++)
+			{
+				byte[,] regSlika = regions[i].odrediNSliku();
+				regSlika = ImageUtil.resizeImage(regSlika, new Size(64, 64));
+				double[] ulaz = pripremiSlikuZaVNM(regSlika);
+				int cifra = bp.izracunajIndeks(ulaz);
+				word = alfabetInv[cifra];
+
+				if (Convert.ToInt32(word) == 0)
+					regions.Remove(regions[i]);
+			}
+
+			for (int i = 0; i < regions.Count; i++)
+			{
+				if ((regions[i].maxX - regions[i].minX) < razmakCelija / 5 || (regions[i].maxY - regions[i].minY) < razmakCelija / 3)
+				{
+					regions.RemoveAt(i);
+					i--;
+				}
+				else if ((regions[i].maxX - regions[i].minX) > (3 * razmakCelija) / 4 || (regions[i].maxY - regions[i].minY) > (2 * razmakCelija) / 3)
+				{
+					regions.RemoveAt(i);
+					i--;
+				}
+			}
 			regions.Sort((a, b) =>
 				{
 					return a.minX.CompareTo(b.minX);
@@ -164,18 +264,7 @@ namespace test
 					matricaTabele[j, i] = 0;
 				}
 			}
-
-		/*	foreach (RasterRegion reg in regions)
-			{
-				for (int i = 0; i < brojRedova; i++)
-				{
-					if (sudokuTable.minY + (razmakCelija * i) + razmakCelija / 4 < reg.yM && sudokuTable.minY + (razmakCelija * (i + 1)) - razmakCelija / 4 > reg.yM)
-					{
-						regionsPerLine[i].Add(reg);
-					}
-				}
-			}*/
-
+				
 			foreach (RasterRegion reg in regions)
 			{
 				for (int i = 0; i < brojRedova; i++)
@@ -199,7 +288,7 @@ namespace test
 			}
 			kmeansRazmak.podeliUGRupe(2, 1);
 
-			string word = "";
+			word = "";
 			for (int j = 0; j < brojRedova; j++) {
 				for (int i = 0; i < regionsPerLine [j].Count; i++) {
 					RasterRegion reg = regionsPerLine [j] [i];
@@ -208,8 +297,6 @@ namespace test
 					for (int m = 0; m < 9; m++) {
 
 						if (sudokuTable.minX  + ((razmakCelija ) * m) < reg.xM && sudokuTable.minX + ((razmakCelija ) * (m + 1)) > reg.xM){
-						//if (sudokuTable.minX + ((razmakCelija) * m) + razmakCelija / 4 < reg.xM && sudokuTable.minX + ((razmakCelija) * (m + 1)) - razmakCelija / 4 > reg.xM) {
-							//sudokuTable.minY + (razmakCelija * i) < reg.yM && sudokuTable.minY + (razmakCelija * (i + 1)) > reg.yM
 							index = m;
 						}
 					}
@@ -224,7 +311,10 @@ namespace test
 					int cifra = bp.izracunajIndeks (ulaz);
 					word = alfabetInv [cifra];
 
-					matricaTabele [j, index] = Convert.ToInt32 (word);
+					if (Convert.ToInt32(word) != 0)
+						matricaTabele[j, index] = Convert.ToInt32(word);
+					else
+						continue;
 
 					if (i != regionsPerLine [j].Count - 1) {
 						prepoznato += pretraziRecnik (word);
@@ -234,7 +324,7 @@ namespace test
 					prepoznato += pretraziRecnik (word);
 					word = "";
 					if (j != brojRedova - 1)
-						prepoznato += Environment.NewLine;
+						prepoznato += System.Environment.NewLine;
 				
 			}
 			
@@ -243,50 +333,13 @@ namespace test
 			System.Console.WriteLine (prepoznato);
 			System.Console.WriteLine ("kraj..");
 
-			/////////
 
 			for (int i = 0; i < 9; i++)
 			{
 				Console.WriteLine(matricaTabele[i, 0].ToString() + " " + matricaTabele[i, 1].ToString() + " " + matricaTabele[i, 2].ToString() + " " + matricaTabele[i, 3].ToString() + " " + matricaTabele[i, 4].ToString() + " " + matricaTabele[i, 5].ToString() + " " + matricaTabele[i, 6].ToString() + " " + matricaTabele[i, 7].ToString() + " " + matricaTabele[i, 8].ToString());
 			}
 
-			string matricaTxt = "";
-			for (int y = 0; y < 9; y++)
-			{
-				for (int x = 0; x < 9; x++)
-				{
-					matricaTxt += matricaTabele[x,y];
-				}
-				if(y!=8)
-					matricaTxt += "\n";
-			}
-
-			int[,] sudoku = new int[9,9];
-			SolvingAlgorithm algoritam = new SolvingAlgorithm ();
-
-			sudoku = algoritam.InicijalizacijaResavanje(matricaTxt);
-			/*while (sudoku == null) {
-				sudoku = algoritam.InicijalizacijaResavanje(matricaTxt);
-			}*/
-
-			if (sudoku != null) {
-				Console.WriteLine ("Resenje");
-				if (sudoku [0, 0] != -1) {
-					for (int y = 0; y < 9; y++) {
-						for (int x = 0; x < 9; x++) {
-							Console.Write (sudoku [x, y]);
-						}
-						Console.Write ("\n");
-					}
-				} else {
-				}
-				return sudoku;
-			} else {
-				return null;
-			}
-		
-
-
+			return matricaTabele;
 
 		}
 
@@ -336,34 +389,6 @@ namespace test
 
 			return lowestDistance.Key;
 		}
-
-		public double[,,] DeSerializeCollection(string fileName)
-		{
-			if (File.Exists(fileName))
-			{
-				double[, ,] temp = null;
-				try
-				{
-				/*	using (StreamReader sr = new StreamReader (Assets.Open ("obucavajuciSkup.bin")))
-					{
-						BinaryFormatter bin = new BinaryFormatter();
-
-						temp = (double[,,])bin.Deserialize(sr);
-					}*/
-				}
-				catch (Exception)
-				{
-					Console.WriteLine("Greska prilikom deserijalizacije!");
-				}
-				return temp;
-			}
-			else
-			{
-				Console.WriteLine("Datoteka " + fileName + " ne postoji!");
-				return null;
-			}
-		}
-
 	}
 }
 

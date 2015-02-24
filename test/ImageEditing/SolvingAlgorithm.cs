@@ -54,7 +54,6 @@ namespace test
 
 		public int[,] InicijalizacijaResavanje(string sudokuTxt)
 		{
-			matrica = sudokuTxt;
 			string[] sudokuRedovi = sudokuTxt.Split('\n');
 			//Console.Write("--->"+sudokuTxt);
 			for (int y = 0; y < 9; y++)
@@ -84,11 +83,25 @@ namespace test
 			if (validacija(sudoku, true) == false)
 			{
 				sudoku[0, 0] = -1;
+				System.Console.WriteLine("Pocetna matrica nije validna!", "Greška!");
+				return sudoku; 
 			}
 
 			brojac = 0;
 			int prolaza = resi();
+
+			if (prolaza == -1)
+				return null;
+
 			sudoku = tempSudoku;
+			/* for (int y = 0; y < 9; y++)
+            {
+                for (int x = 0; x < 9; x++)
+                {
+                    Console.Write(sudoku[x, y]);
+                }
+                Console.Write("\n");
+            }*/
 			return sudoku;
 		}
 
@@ -174,7 +187,8 @@ namespace test
 							if (isComplete(testSudoku))
 								return testSudoku;
 
-
+							//if (y == 6 && x==7)
+							//  Console.Write("");
 							testSudoku[y, x] = mogucaResenja[y, x][i];
 							//Console.WriteLine(y + ":" + x + ">>" + testSudoku[y, x]); 
 
@@ -216,6 +230,7 @@ namespace test
 						}
 						if (isComplete(testSudoku))
 							return testSudoku;
+						//Console.WriteLine("Y: " + y + " X:" +x);
 						return null;
 					}
 				}

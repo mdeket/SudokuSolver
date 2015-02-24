@@ -56,6 +56,9 @@ namespace test
 			// aapt resource value: 0x7f020003
 			public const int indicator_autocrop = 2130837507;
 			
+			// aapt resource value: 0x7f020004
+			public const int sudoku = 2130837508;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -71,6 +74,249 @@ namespace test
 			
 			// aapt resource value: 0x7f050002
 			public const int discard = 2131034114;
+			
+			// aapt resource value: 0x7f05000f
+			public const int editText11 = 2131034127;
+			
+			// aapt resource value: 0x7f050010
+			public const int editText12 = 2131034128;
+			
+			// aapt resource value: 0x7f050011
+			public const int editText13 = 2131034129;
+			
+			// aapt resource value: 0x7f050012
+			public const int editText14 = 2131034130;
+			
+			// aapt resource value: 0x7f050013
+			public const int editText15 = 2131034131;
+			
+			// aapt resource value: 0x7f050014
+			public const int editText16 = 2131034132;
+			
+			// aapt resource value: 0x7f050015
+			public const int editText17 = 2131034133;
+			
+			// aapt resource value: 0x7f050016
+			public const int editText18 = 2131034134;
+			
+			// aapt resource value: 0x7f050017
+			public const int editText19 = 2131034135;
+			
+			// aapt resource value: 0x7f050019
+			public const int editText21 = 2131034137;
+			
+			// aapt resource value: 0x7f05001a
+			public const int editText22 = 2131034138;
+			
+			// aapt resource value: 0x7f05001b
+			public const int editText23 = 2131034139;
+			
+			// aapt resource value: 0x7f05001c
+			public const int editText24 = 2131034140;
+			
+			// aapt resource value: 0x7f05001d
+			public const int editText25 = 2131034141;
+			
+			// aapt resource value: 0x7f05001e
+			public const int editText26 = 2131034142;
+			
+			// aapt resource value: 0x7f05001f
+			public const int editText27 = 2131034143;
+			
+			// aapt resource value: 0x7f050020
+			public const int editText28 = 2131034144;
+			
+			// aapt resource value: 0x7f050021
+			public const int editText29 = 2131034145;
+			
+			// aapt resource value: 0x7f050023
+			public const int editText31 = 2131034147;
+			
+			// aapt resource value: 0x7f050024
+			public const int editText32 = 2131034148;
+			
+			// aapt resource value: 0x7f050025
+			public const int editText33 = 2131034149;
+			
+			// aapt resource value: 0x7f050026
+			public const int editText34 = 2131034150;
+			
+			// aapt resource value: 0x7f050027
+			public const int editText35 = 2131034151;
+			
+			// aapt resource value: 0x7f050028
+			public const int editText36 = 2131034152;
+			
+			// aapt resource value: 0x7f050029
+			public const int editText37 = 2131034153;
+			
+			// aapt resource value: 0x7f05002a
+			public const int editText38 = 2131034154;
+			
+			// aapt resource value: 0x7f05002b
+			public const int editText39 = 2131034155;
+			
+			// aapt resource value: 0x7f05002d
+			public const int editText41 = 2131034157;
+			
+			// aapt resource value: 0x7f05002e
+			public const int editText42 = 2131034158;
+			
+			// aapt resource value: 0x7f05002f
+			public const int editText43 = 2131034159;
+			
+			// aapt resource value: 0x7f050030
+			public const int editText44 = 2131034160;
+			
+			// aapt resource value: 0x7f050031
+			public const int editText45 = 2131034161;
+			
+			// aapt resource value: 0x7f050032
+			public const int editText46 = 2131034162;
+			
+			// aapt resource value: 0x7f050033
+			public const int editText47 = 2131034163;
+			
+			// aapt resource value: 0x7f050034
+			public const int editText48 = 2131034164;
+			
+			// aapt resource value: 0x7f050035
+			public const int editText49 = 2131034165;
+			
+			// aapt resource value: 0x7f050037
+			public const int editText51 = 2131034167;
+			
+			// aapt resource value: 0x7f050038
+			public const int editText52 = 2131034168;
+			
+			// aapt resource value: 0x7f050039
+			public const int editText53 = 2131034169;
+			
+			// aapt resource value: 0x7f05003a
+			public const int editText54 = 2131034170;
+			
+			// aapt resource value: 0x7f05003b
+			public const int editText55 = 2131034171;
+			
+			// aapt resource value: 0x7f05003c
+			public const int editText56 = 2131034172;
+			
+			// aapt resource value: 0x7f05003d
+			public const int editText57 = 2131034173;
+			
+			// aapt resource value: 0x7f05003e
+			public const int editText58 = 2131034174;
+			
+			// aapt resource value: 0x7f05003f
+			public const int editText59 = 2131034175;
+			
+			// aapt resource value: 0x7f050041
+			public const int editText61 = 2131034177;
+			
+			// aapt resource value: 0x7f050042
+			public const int editText62 = 2131034178;
+			
+			// aapt resource value: 0x7f050043
+			public const int editText63 = 2131034179;
+			
+			// aapt resource value: 0x7f050044
+			public const int editText64 = 2131034180;
+			
+			// aapt resource value: 0x7f050045
+			public const int editText65 = 2131034181;
+			
+			// aapt resource value: 0x7f050046
+			public const int editText66 = 2131034182;
+			
+			// aapt resource value: 0x7f050047
+			public const int editText67 = 2131034183;
+			
+			// aapt resource value: 0x7f050048
+			public const int editText68 = 2131034184;
+			
+			// aapt resource value: 0x7f050049
+			public const int editText69 = 2131034185;
+			
+			// aapt resource value: 0x7f05004b
+			public const int editText71 = 2131034187;
+			
+			// aapt resource value: 0x7f05004c
+			public const int editText72 = 2131034188;
+			
+			// aapt resource value: 0x7f05004d
+			public const int editText73 = 2131034189;
+			
+			// aapt resource value: 0x7f05004e
+			public const int editText74 = 2131034190;
+			
+			// aapt resource value: 0x7f05004f
+			public const int editText75 = 2131034191;
+			
+			// aapt resource value: 0x7f050050
+			public const int editText76 = 2131034192;
+			
+			// aapt resource value: 0x7f050051
+			public const int editText77 = 2131034193;
+			
+			// aapt resource value: 0x7f050052
+			public const int editText78 = 2131034194;
+			
+			// aapt resource value: 0x7f050053
+			public const int editText79 = 2131034195;
+			
+			// aapt resource value: 0x7f050055
+			public const int editText81 = 2131034197;
+			
+			// aapt resource value: 0x7f050056
+			public const int editText82 = 2131034198;
+			
+			// aapt resource value: 0x7f050057
+			public const int editText83 = 2131034199;
+			
+			// aapt resource value: 0x7f050058
+			public const int editText84 = 2131034200;
+			
+			// aapt resource value: 0x7f050059
+			public const int editText85 = 2131034201;
+			
+			// aapt resource value: 0x7f05005a
+			public const int editText86 = 2131034202;
+			
+			// aapt resource value: 0x7f05005b
+			public const int editText87 = 2131034203;
+			
+			// aapt resource value: 0x7f05005c
+			public const int editText88 = 2131034204;
+			
+			// aapt resource value: 0x7f05005d
+			public const int editText89 = 2131034205;
+			
+			// aapt resource value: 0x7f05005f
+			public const int editText91 = 2131034207;
+			
+			// aapt resource value: 0x7f050060
+			public const int editText92 = 2131034208;
+			
+			// aapt resource value: 0x7f050061
+			public const int editText93 = 2131034209;
+			
+			// aapt resource value: 0x7f050062
+			public const int editText94 = 2131034210;
+			
+			// aapt resource value: 0x7f050063
+			public const int editText95 = 2131034211;
+			
+			// aapt resource value: 0x7f050064
+			public const int editText96 = 2131034212;
+			
+			// aapt resource value: 0x7f050065
+			public const int editText97 = 2131034213;
+			
+			// aapt resource value: 0x7f050066
+			public const int editText98 = 2131034214;
+			
+			// aapt resource value: 0x7f050067
+			public const int editText99 = 2131034215;
 			
 			// aapt resource value: 0x7f050009
 			public const int exit = 2131034121;
@@ -102,11 +348,44 @@ namespace test
 			// aapt resource value: 0x7f050008
 			public const int solveSudoku = 2131034120;
 			
+			// aapt resource value: 0x7f05000d
+			public const int tableLayout1 = 2131034125;
+			
+			// aapt resource value: 0x7f05000e
+			public const int tableRow1 = 2131034126;
+			
+			// aapt resource value: 0x7f050018
+			public const int tableRow2 = 2131034136;
+			
+			// aapt resource value: 0x7f050022
+			public const int tableRow3 = 2131034146;
+			
+			// aapt resource value: 0x7f05002c
+			public const int tableRow4 = 2131034156;
+			
+			// aapt resource value: 0x7f050036
+			public const int tableRow5 = 2131034166;
+			
+			// aapt resource value: 0x7f050040
+			public const int tableRow6 = 2131034176;
+			
+			// aapt resource value: 0x7f05004a
+			public const int tableRow7 = 2131034186;
+			
+			// aapt resource value: 0x7f050054
+			public const int tableRow8 = 2131034196;
+			
+			// aapt resource value: 0x7f05005e
+			public const int tableRow9 = 2131034206;
+			
 			// aapt resource value: 0x7f050006
 			public const int takePicture = 2131034118;
 			
 			// aapt resource value: 0x7f05000c
 			public const int toMain = 2131034124;
+			
+			// aapt resource value: 0x7f050068
+			public const int validate = 2131034216;
 			
 			static Id()
 			{
@@ -129,6 +408,9 @@ namespace test
 			
 			// aapt resource value: 0x7f030002
 			public const int showResult = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int ValidationLayout = 2130903043;
 			
 			static Layout()
 			{

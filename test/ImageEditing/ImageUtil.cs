@@ -43,7 +43,7 @@ namespace test
 			return slika;
 		}
 
-		public static Bitmap matrixToBitmap(byte[,] slika)
+	/*	public static Bitmap matrixToBitmap(byte[,] slika)
 		{
 			//BitmapFactory.DecodeByteArray (slika, 0, 0);
 
@@ -71,44 +71,80 @@ namespace test
 							System.Console.WriteLine ("Razlicito od nula!");
 						}
 					}
-				}*/
+				}
 
 			}catch(Exception e){
 				System.Console.WriteLine ("greskaa" + e.Message);
 			}
 			return b;
+			
 
 
-
-		}
+		}*/
 		#endregion
 
-	/*	#region Funkcije za pretvaranje Bitmap objekta u 'Color' matricu
-		public static unsafe Bitmap colorMatrixToBitmap(byte[, ,] slika)
+		#region Funkcije za pretvaranje Bitmap objekta u 'Color' matricu
+		public static unsafe byte[,] colorMatrixToBWByteMatrix(byte[, ,] slika)
 		{
 
 			int w = slika.GetLength(1);// .GetLowerBound(0);
 			int h = slika.GetLength(0);
-			int PixelSize = 4;
-			Bitmap into = Bitmap.CreateBitmap(w,h,Bitmap.Config.Argb8888);
-			into.Width = w;
-			into.Height = h;
-			Rectangle lrEntire = new Rectangle(new System.Drawing.Point(), new Size(w, h));
-
+			byte[,] into = new byte[h, w];
+			int count = 0;
 			for (int y = 0; y < h; y++)
 			{
 				for (int x = 0; x < w; x++)
 				{
-					Android.Graphics.Color cA = new Android.Graphics.Color ();
-					cA.R = slika[y, x, 0];
-					cA.G = slika[y, x, 1];
-					cA.B = slika[y, x, 2];
-					into.SetPixel (x, y, cA);
+					System.Drawing.Color cA = System.Drawing.Color.FromArgb(slika[y, x, 0], slika[y, x, 1], slika[y, x, 2]);
 
+					if (cA.R > 200 && cA.B > 200 && cA.G > 200)
+					{
+						count++;
+						into[y, x] = Convert.ToByte(255);
+					}
+					else
+					{
+						into[y, x] = 0;
+					}
 				}
 			}
 			return into;
-		}*/
+		}
+
+		public static unsafe byte[,] colorMatrixToByteMatrix(byte[, ,] slika)
+		{
+
+			int w = slika.GetLength(1);// .GetLowerBound(0);
+			int h = slika.GetLength(0);
+			byte[,] into = new byte[w, h];
+			int count = 0;
+			for (int y = 0; y < h; y++)
+			{
+				for (int x = 0; x < w; x++)
+				{
+					System.Drawing.Color cA = System.Drawing.Color.FromArgb (slika [y, x, 0], slika [y, x, 1], slika [y, x, 2]);
+
+					double color = (cA.R + cA.B + cA.G)/3;
+					if (color > 200) {
+						count++;
+						into [x, y] = Convert.ToByte (255);
+					} else {
+						into [x, y] = 0;
+					}
+
+					//		cA.R = slika[y, x, 0];
+					//		cA.G = slika[y, x, 1];
+					//		cA.B = slika[y, x, 2];
+					//System.Console.WriteLine (cA.ToArgb ());
+					//	System.Console.WriteLine (Convert.ToByte (cA.ToArgb ()));
+					//	byte boja = Convert.ToByte (cA.ToArgb ());
+					//	into [x, y] = Convert.ToByte (cA.ToArgb());
+					//into [w, h] = (cA.ToArgb());
+				}
+			}
+			return into;
+		}
+		#endregion
 
 		public static unsafe byte[, ,] bitmapToColorMatrix(Bitmap src)
 		{
@@ -132,10 +168,13 @@ namespace test
 					{
 				//		System.Drawing.Color c = System.Drawing.Color.FromArgb (source.GetPixel (x, y));
 					//	((Android.Graphics.Color)source.GetPixel (x, y)).;
-						Android.Graphics.Color color1 = new Android.Graphics.Color (source.GetPixel (x, y));
+
+						System.Drawing.Color color1 = System.Drawing.Color.FromArgb(source.GetPixel (x, y));
+
 						slika [y, x, 0] = color1.R;//[x * PixelSize + 2];// Red
 						slika [y, x, 1] = color1.G;//row[x * PixelSize + 1];// Green
 						slika [y, x, 2] = color1.B;//row[x * PixelSize + 0];// Blue
+
 					}
 				}
 			}
@@ -640,11 +679,10 @@ namespace test
 
 			int offX = (size.Width - destWidth) / 2;
 			int offY = (size.Height - destHeight) / 2;
-		
+			
 			for (int i = offX, m = 0; i < 64 && m < w1; i++, m++) {
 				for (int j = offY, n = 0; j < 64 && n < h1; j++, n++) {
 					imgReturn [i, j] = src [m, n];
-
 				}
 			}
 			return imgReturn;

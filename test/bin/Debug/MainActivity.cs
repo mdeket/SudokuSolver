@@ -30,8 +30,6 @@ namespace test
 		private Java.IO.File _dir;
 		private Java.IO.File _file;
 		private String filePath;
-		ProgressDialog progressBas;
-		int progressInc = 1;
 		public static readonly int PickImageId = 1000;
 
 		int PIC_CROP = 2;
@@ -60,11 +58,11 @@ namespace test
 				pickImage.Click += LoadImage;
 			}
 
-			if (Intent.GetByteArrayExtra ("BMP") != null) {
+			/*if (Intent.GetByteArrayExtra ("BMP") != null) {
 				byte[] bytes = Intent.GetByteArrayExtra ("BMP");
 				Bitmap bmp = BitmapFactory.DecodeByteArray (bytes, 0, bytes.Length);
 				imageView.SetImageBitmap (bmp);
-			}
+			}*/
 
 		}
 
@@ -92,30 +90,17 @@ namespace test
 					imageView.SetImageURI(uri);
 				}
 			}
-			//base.OnActivityResult(requestCode, resultCode, data);
+
 			if(requestCode == 0){
-				// make it available in the gallery
-			//	Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
 				Uri contentUri = Uri.FromFile(_file);
 				picUri = contentUri;
 				imageView.SetImageBitmap (getBitmapFromUri (picUri));
-			//	mediaScanIntent.SetData(contentUri);
-			//	SendBroadcast(mediaScanIntent);
-			//	performCrop();
-				//startuj novu aktivnost i posalji joj _file, requestCode = 1
-		/*		Intent intent = new Intent(this,typeof(CropImageActivity));
-				intent.PutExtra("filePath",filePath);
-			//	StartActivity(intent);*/
+				bmp = getBitmapFromUri (picUri);
 			}
 			if(requestCode == PIC_CROP){
-				//get the returned data
 				Bundle extras = data.Extras;
 				var temp = Intent.GetParcelableExtra ("data");
-				//get the cropped bitmap
 				Bitmap thePic = Bitmap.CreateScaledBitmap((Bitmap)extras.GetParcelable("data"),800,800,true);
-				//retrieve a reference to the ImageView
-			//	ImageView picView = (ImageView)findViewById(R.id.picture);
-				//display the returned cropped image
 				imageView.SetImageBitmap(thePic);
 
 			}
@@ -147,7 +132,7 @@ namespace test
 			//respond to users whose devices do not support the crop action
 			catch(ActivityNotFoundException anfe){
 				//display an error message
-				String errorMessage = "Whoops - your device doesn't support the crop action!";
+				String errorMessage = "Whoops - your device doesn't support the crop action!" + anfe.Message;
 				Toast.MakeText(this, errorMessage,ToastLength.Short).Show();
 			}
 		}
@@ -201,7 +186,7 @@ namespace test
 			System.IO.Stream ins = null;
 			try
 			{
-				int IMAGE_MAX_SIZE = 1024;
+				int IMAGE_MAX_SIZE = 4096;
 				ins = ContentResolver.OpenInputStream(uri);
 
 				// Decode image size
@@ -270,47 +255,19 @@ namespace test
 				mDialog.Show ();
 				Task.Run (() => {
 					SudokuNumbers sudoku = new SudokuNumbers ();
-
-					int[,] skup1 = DeSerializeCollectionColor("skupK1");
-					int[,] skup2 = DeSerializeCollectionColor("skupK2");
-					for (int i = 0; i < skup1.GetLength(0); i++)
-					{
-						System.Drawing.Color c = System.Drawing.Color.FromArgb(skup1[i, 0], skup1[i, 1], skup1[i, 2]);
-						sudoku.skupK1.Add(c);
-					}
-
-					for (int i = 0; i < skup2.GetLength(0); i++)
-					{
-						System.Drawing.Color c = System.Drawing.Color.FromArgb(skup2[i, 0], skup2[i, 1], skup2[i, 2]);
-						sudoku.skupK2.Add(c);
-					}
-
-					sudoku.bayesFilter = new BayesFilter(sudoku.skupK1, sudoku.skupK2);
-					sudoku.bayesFilter.obucavanje();
-
-
 					double[,,] temp = DeSerializeCollection ("obucavajuciSkup");
 					sudoku.bp = new BackPropagation (temp);
 					sudoku.initialize ();
-
 					sudoku.bp.obuci (); 
-
-				//	sudoku.bp.obuci ();
 
 					int[,] resenjeInt = sudoku.Prepoznaj (bmp);
 					if (resenjeInt != null) {
 						string resenje = "";
 						for (int i = 0; i < 9; i++) {
 							for (int j = 0; j < 9; j++) {
-								/*if(j%3 == 0 && j != 0){
-									resenje += "   ";
-								}*/
+
 								resenje += resenjeInt [j, i].ToString ()+"|";
 							}
-						/*	if((i+1)%3 == 0 && i != 0){
-								resenje += "\n";
-							}
-							resenje += "\n";*/
 						}
 						mDialog.Dismiss ();
 
@@ -347,31 +304,6 @@ namespace test
 				}
 				return temp;
 		}
-
-		public int[,] DeSerializeCollectionColor(string fileName)
-		{
-
-			int[,] temp = null;
-				
-				try
-				{
-						using (Stream sr =  Assets.Open (fileName))
-						{
-							BinaryFormatter bin = new BinaryFormatter();
-
-							temp = (int[,])bin.Deserialize(sr);
-						}
-				}
-				catch (IOException)
-				{
-						Console.WriteLine("Greska prilikom deserijalizacije!");
-				}
-				return temp;
-					
-
-		}
-
-
 	}
 }
 

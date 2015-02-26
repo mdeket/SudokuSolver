@@ -90,8 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AboutAssets.txt" />
-    <AndroidAsset Include="Assets\obucavajuciSkup" />
     <AndroidAsset Include="Assets\skupK1" />
     <AndroidAsset Include="Assets\skupK2" />
+    <AndroidAsset Include="Assets\obucavajuciSkup" />
   </ItemGroup>
 </Project>

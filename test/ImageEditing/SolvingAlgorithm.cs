@@ -8,7 +8,6 @@ namespace test
 {
 	public class SolvingAlgorithm
 	{
-		static string matrica = null;
 		private static int[, ,] kvadranti = new int[,,] {
 			//   Y         X
 			{ {1,2,3} , {1,2,3} } , //1 - gornji levi

@@ -68,83 +68,87 @@ namespace test
 
 		public int[,] Prepoznaj(Bitmap bmp) //ZADATAK
 		{
-			//bajes
+
+			//KMEANS filter
+
 			byte[, ,] slika = ImageUtil.bitmapToColorMatrix(bmp);
-		
-			// -------- primeniti filter na sliku ----------------
 			int w = slika.GetLength(1);
 			int h = slika.GetLength(0);
+
+			int xMin = 5;
+			int xMax = w-5;
+
+			int yMin = 5;
+			int yMax = h-5;
+
+			Dictionary<System.Drawing.Color, int> colorHistogram = new Dictionary<System.Drawing.Color, int>();
+			for (int y = yMin; y < yMax; y++)
+			{
+				for (int x = xMin; x < xMax; x++)
+				{
+					byte cbR = slika[y, x, 0];
+					byte cbG = slika[y, x, 1];
+					byte cbB = slika[y, x, 2];
+
+					System.Drawing.Color cc = System.Drawing.Color.FromArgb(cbR, cbG, cbB);
+					if (colorHistogram.ContainsKey(cc))
+					{
+						int n = colorHistogram[cc];
+						n++;
+						colorHistogram[cc] = n;
+					}
+					else
+					{
+						colorHistogram.Add(cc, 1);
+					}
+				}
+			}
+
+			KMeans kmeans = new KMeans(); // inicijalizacija
+			int brojGrupa = 0;
+			// inicijalizovati podatke koje ce K-means da klasterizuje i pokrenuti algoritam
+			// postavljanje elemenata koje je potrebno klasterizovati
+			foreach (System.Drawing.Color key in colorHistogram.Keys)
+			{
+				kmeans.elementi.Add(key);
+			}
+			brojGrupa = int.Parse("2");
+			// pokretanje K-means algoritma
+			kmeans.podeliUGRupe(brojGrupa, 10);
+
+		
 			byte[, ,] nslika = new byte[h, w, 3];
 
 			for (int y = 0; y < h; y++)
 			{
 				for (int x = 0; x < w; x++)
 				{
-					// za svaki piksel na slici odrediti verovatnocu da pripada klasi 1
-					// pozvati metodu "pK1akojeRGB"
 					byte cbR = slika[y, x, 0];
 					byte cbG = slika[y, x, 1];
 					byte cbB = slika[y, x, 2];
 					System.Drawing.Color cc = System.Drawing.Color.FromArgb(255, cbR, cbG, cbB);
-					// racunanje verovatnoce da boja piksela pripada prvoj klasi
 
-					//OK
-				
-					double pk1rgb = bayesFilter.pK1akojeRGB(cc);
-					// verovatnoca - realna vrednost u intervalu [0,1]
-					// se skalira na celobroju vrednost u intervalu [0, 255]
-					// - crno - ne pripada klasi 1
-					// - belo - pripada klasi 1
-					// - nijansa sive - delimicno pripada klasi 1
-				/*	if (pk1rgb == 0) {
-						System.Console.WriteLine ("nula pk1rgb");
-					} else if(double.IsNaN(pk1rgb)){
-						System.Console.WriteLine ("double.IsNaN pk1rgb");
-					} else if(pk1rgb > 1){
-						System.Console.WriteLine ("1 < pk1rgb");
-					}*/
-
-					//OK
-					int temp = (int)(255 * pk1rgb);
-					byte skalirano = Convert.ToByte (255 * pk1rgb);//(byte)(255 * pk1rgb);
-
-					/*if (skalirano != 0) {
-						System.Console.WriteLine ("nije nula");
-					}*/
-					// sve tri komponente (R,G,B) se postavljaju istu vrednost
-					// kako bi se dobila grayscale rezultujuca slika
-					nslika[y, x, 0] = skalirano;
-					nslika[y, x, 1] = skalirano;
-					nslika[y, x, 2] = skalirano;
+					// za svaki piksel na slici odrediti kojem klasteru pripada
+					// pronalazenje indeksa (rednog broja) klastera kojem pripada piksel
+					int najbliza = 0;
+					for (int i = 1; i < brojGrupa; i++)
+					{
+						Cluster grupa = kmeans.grupe[i];
+						if (grupa.rastojanje(cc) < kmeans.grupe[najbliza].rastojanje(cc))
+						{
+							najbliza = i;
+						}
+					}
+					Cluster najblizaGrupa = kmeans.grupe[najbliza];
+					System.Drawing.Color boja = najblizaGrupa.centar;
+					nslika[y, x, 0] = boja.R;
+					nslika[y, x, 1] = boja.G;
+					nslika[y, x, 2] = boja.B;
 				}
 			}
-
-
 
 			byte[,] slika1 = ImageUtil.colorMatrixToBWByteMatrix(nslika);
-
-
-
-
-			int white = 0;
-			int black = 0;
-			for (int i = 0; i < slika1.GetLength (0); i++) {
-				for (int j = 0; j < slika1.GetLength (1); j++) {
-					if (slika1 [i, j] == 0) {
-						white++;
-					} else if (slika1 [i, j] == 255) {
-						black++;
-					}
-				}
-			}
-
-
-
-
 			string prepoznato = "";
-			//byte[,] slika1 = ImageUtil.bitmapToByteMatrix(into);
-
-			//byte[,] bSlika = ImageUtil.matrixToBinary(slika1, 200);  -- dodato u funkciji ImageUtil.colorMatrixToByteArray nslika
 
 			List<RasterRegion> regions = ImageUtil.regionLabeling(slika1);
 			foreach (RasterRegion reg in regions)

@@ -99,6 +99,7 @@ namespace test
 				Uri contentUri = Uri.FromFile(_file);
 				picUri = contentUri;
 				imageView.SetImageBitmap (getBitmapFromUri (picUri));
+				bmp = getBitmapFromUri (picUri);
 			//	mediaScanIntent.SetData(contentUri);
 			//	SendBroadcast(mediaScanIntent);
 			//	performCrop();

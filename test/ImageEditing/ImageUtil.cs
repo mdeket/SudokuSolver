@@ -42,45 +42,7 @@ namespace test
 			}
 			return slika;
 		}
-
-	/*	public static Bitmap matrixToBitmap(byte[,] slika)
-		{
-			//BitmapFactory.DecodeByteArray (slika, 0, 0);
-
-			int w = slika.GetLength(1);// .GetLowerBound(0);
-			int h = slika.GetLength(0);
-			byte[] slika_temp = new byte[w*h];
-			for (int i = 0; i < w; i++) {
-				for (int y = 0; y < h; y++) {
-					slika_temp [y * w + i] = slika [y, i];
-				}
-			}
-		
-			int PixelSize = 4;
-			Bitmap b = null;
-			try{
-				BitmapFactory.Options options = new BitmapFactory.Options ();
-				options.InJustDecodeBounds = true;
-				options.OutWidth = w;
-				options.OutHeight = h;
-			//	options.InMutable = true;
-				b = BitmapFactory.DecodeByteArray (slika_temp, 0, slika_temp.Length,options);
-			/*	for(int x = 0; x < b.Width; x++){
-					for(int y = 0; y < b.Height; y++){
-						if (b.GetPixel (x, y) != 0) {
-							System.Console.WriteLine ("Razlicito od nula!");
-						}
-					}
-				}
-
-			}catch(Exception e){
-				System.Console.WriteLine ("greskaa" + e.Message);
-			}
-			return b;
 			
-
-
-		}*/
 		#endregion
 
 		#region Funkcije za pretvaranje Bitmap objekta u 'Color' matricu
@@ -97,7 +59,7 @@ namespace test
 				{
 					System.Drawing.Color cA = System.Drawing.Color.FromArgb(slika[y, x, 0], slika[y, x, 1], slika[y, x, 2]);
 
-					if (cA.R > 200 && cA.B > 200 && cA.G > 200)
+					if (cA.R > 100 && cA.B > 100 && cA.G > 100)
 					{
 						count++;
 						into[y, x] = Convert.ToByte(255);
@@ -131,15 +93,6 @@ namespace test
 					} else {
 						into [x, y] = 0;
 					}
-
-					//		cA.R = slika[y, x, 0];
-					//		cA.G = slika[y, x, 1];
-					//		cA.B = slika[y, x, 2];
-					//System.Console.WriteLine (cA.ToArgb ());
-					//	System.Console.WriteLine (Convert.ToByte (cA.ToArgb ()));
-					//	byte boja = Convert.ToByte (cA.ToArgb ());
-					//	into [x, y] = Convert.ToByte (cA.ToArgb());
-					//into [w, h] = (cA.ToArgb());
 				}
 			}
 			return into;
@@ -159,16 +112,12 @@ namespace test
 			int w = src.Width;
 
 			byte[, ,] slika = new byte[h, w, 3];
-			int PixelSize = 4;
 			unsafe
 			{
 				for (int y = 0; y < h; y++)
 				{
 					for (int x = 0; x < w; x++)
 					{
-				//		System.Drawing.Color c = System.Drawing.Color.FromArgb (source.GetPixel (x, y));
-					//	((Android.Graphics.Color)source.GetPixel (x, y)).;
-
 						System.Drawing.Color color1 = System.Drawing.Color.FromArgb(source.GetPixel (x, y));
 
 						slika [y, x, 0] = color1.R;//[x * PixelSize + 2];// Red

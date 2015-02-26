@@ -80,7 +80,7 @@ namespace test
 				StartActivityForResult(cropIntent, PIC_CROP);
 			}
 			catch(ActivityNotFoundException anfe){
-				Toast.MakeText (this, "Can not find image crop app", ToastLength.Short).Show ();
+				Toast.MakeText (this, "Can not find image crop app" + anfe.Message, ToastLength.Short).Show ();
 			}
 
 		}

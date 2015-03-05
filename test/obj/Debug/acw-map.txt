@@ -1,4 +1,0 @@
-test.MainActivity;test.MainActivity
-test.CropImageActivity;test.CropImageActivity
-test.ShowResult;test.ShowResult
-test.Validation;test.Validation

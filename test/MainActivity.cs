@@ -35,9 +35,16 @@ namespace test
 		int PIC_CROP = 2;
 		//captured picture uri
 		private Uri picUri;
+		SudokuNumbers sudoku = new SudokuNumbers ();
 
 		protected override void OnCreate (Bundle bundle)
 		{
+
+			double[,,] temp = DeSerializeCollection ("obucavajuciSkup");
+			sudoku.bp = new BackPropagation (temp);
+			sudoku.initialize ();
+			sudoku.bp.obuci (); 
+		//	sudoku.bp.obuci (); 
 			System.Console.WriteLine ("vratio sam se u main activity");
 			base.OnCreate (bundle);
 			SetContentView (Resource.Layout.Main);
@@ -57,13 +64,6 @@ namespace test
 				solveSudoku.Click += Solve;
 				pickImage.Click += LoadImage;
 			}
-
-			/*if (Intent.GetByteArrayExtra ("BMP") != null) {
-				byte[] bytes = Intent.GetByteArrayExtra ("BMP");
-				Bitmap bmp = BitmapFactory.DecodeByteArray (bytes, 0, bytes.Length);
-				imageView.SetImageBitmap (bmp);
-			}*/
-
 		}
 
 		protected void LoadImage(object sender, EventArgs eventArgs){
@@ -96,44 +96,6 @@ namespace test
 				picUri = contentUri;
 				imageView.SetImageBitmap (getBitmapFromUri (picUri));
 				bmp = getBitmapFromUri (picUri);
-			}
-			if(requestCode == PIC_CROP){
-				Bundle extras = data.Extras;
-				var temp = Intent.GetParcelableExtra ("data");
-				Bitmap thePic = Bitmap.CreateScaledBitmap((Bitmap)extras.GetParcelable("data"),800,800,true);
-				imageView.SetImageBitmap(thePic);
-
-			}
-
-		}
-
-		private void performCrop(){
-			//take care of exceptions
-			try {
-				//call the standard crop action intent (the user device may not support it)
-				Intent cropIntent = new Intent("com.android.camera.action.CROP");
-				//indicate image type and Uri
-				cropIntent.SetDataAndType(picUri, "image/*");
-				//set crop properties
-				cropIntent.PutExtra("crop", true);
-				//indicate aspect of desired crop
-				cropIntent.PutExtra("scale", true);
-				//indicate output X and Y
-				cropIntent.PutExtra("outputX", 800);
-				cropIntent.PutExtra("outputY", 800);
-				//retrieve data on return
-				cropIntent.PutExtra("aspectX", 10);
-				cropIntent.PutExtra("aspectY", 10);
-				cropIntent.PutExtra("return-data", true);
-				//start the activity - we handle returning in onActivityResult
-				StartActivityForResult(cropIntent, PIC_CROP);
-
-			}
-			//respond to users whose devices do not support the crop action
-			catch(ActivityNotFoundException anfe){
-				//display an error message
-				String errorMessage = "Whoops - your device doesn't support the crop action!" + anfe.Message;
-				Toast.MakeText(this, errorMessage,ToastLength.Short).Show();
 			}
 		}
 
@@ -254,11 +216,7 @@ namespace test
 				mDialog.SetCancelable (false);
 				mDialog.Show ();
 				Task.Run (() => {
-					SudokuNumbers sudoku = new SudokuNumbers ();
-					double[,,] temp = DeSerializeCollection ("obucavajuciSkup");
-					sudoku.bp = new BackPropagation (temp);
-					sudoku.initialize ();
-					sudoku.bp.obuci (); 
+
 
 					int[,] resenjeInt = sudoku.Prepoznaj (bmp);
 					if (resenjeInt != null) {

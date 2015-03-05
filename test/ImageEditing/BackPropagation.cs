@@ -35,7 +35,7 @@ namespace test
 			beta = 0.5;
 			slojevi[0].n = 64;  //broj neurona ulaznog sloja
 			slojevi[1].n = 10;  //broj neurona skrivenog sloja
-			slojevi[2].n = 27;  //broj neurona izlaznog sloja
+			slojevi[2].n = 10;  //broj neurona izlaznog sloja
 		}
 
 		protected void inicijalizacijaTezina()
